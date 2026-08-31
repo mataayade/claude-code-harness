@@ -1,0 +1,8 @@
+CLAUDE.local.md
+__pycache__/
+*.bak*
+.pytest_cache/
+.ruff_cache/
+worklog/
+tests/__pycache__/
+.sanitize-terms.txt

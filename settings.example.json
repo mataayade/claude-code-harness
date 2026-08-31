@@ -1,0 +1,76 @@
+{
+  "model": "claude-fable-5[1m]",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/session-start-logger.py",
+            "shell": "bash",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/pretooluse-guard.py",
+            "shell": "bash",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python hooks/pretooluse-cost-gate.py",
+            "shell": "bash",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python hooks/pretooluse-external-send-gate.py",
+            "shell": "bash",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python hooks/pretooluse-heredoc-gate.py",
+            "shell": "bash",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/session-end-worklog.py",
+            "shell": "bash",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python hooks/posttooluse-lint-gate.py",
+            "shell": "bash",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
